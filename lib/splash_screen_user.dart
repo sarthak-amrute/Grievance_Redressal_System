@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:grievance_redressal_system/loginpage_user.dart';
 import 'package:grievance_redressal_system/homepage_user.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -32,10 +34,22 @@ class _SplashScreenState extends State<SplashScreen>
     // Navigate after 5 seconds
     Future.delayed(const Duration(seconds: 5), () {
       if (mounted) {
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => const HomepageUser()),
-        );
+        // Check if user is already logged in
+        User? currentUser = FirebaseAuth.instance.currentUser;
+        
+        if (currentUser != null) {
+          // User is already logged in, navigate to homepage
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => const HomepageUser()),
+          );
+        } else {
+          // User is not logged in, navigate to login screen
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => const LoginScreenUser()),
+          );
+        }
       }
     });
   }

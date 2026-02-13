@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "632173026832",
+    "project_id": "grievanceapp-97fc5",
+    "storage_bucket": "grievanceapp-97fc5.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:632173026832:android:6b9e4f40121e8f425d3495",
+        "android_client_info": {
+          "package_name": "com.example.grievance_redressal_system"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "632173026832-m77avqgjtk9kiuld48llhv3bpsubf6rm.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.grievance_redressal_system",
+            "certificate_hash": "32dcca882fc42eaa1ba7ee6b8594ade30df1402b"
+          }
+        },
+        {
+          "client_id": "632173026832-vjd7k4525kt8a84ki58pva94si4doiel.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBxq3zltHCpRtaGi_QcgF_eudsxwl8O4j8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "632173026832-vjd7k4525kt8a84ki58pva94si4doiel.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "632173026832-7tr4kqfn3l39al9fcldu3q6kq2kbr4kd.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.grievanceRedressalSystem"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
