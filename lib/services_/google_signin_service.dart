@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -16,7 +17,7 @@ class GoogleSignInService {
       final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
 
       if (googleUser == null) {
-        print(' Google Sign-In cancelled by user');
+        debugPrint('Google Sign-In cancelled by user');
         return null;
       }
 
@@ -45,7 +46,7 @@ class GoogleSignInService {
 
       return userCredential;
     } catch (e) {
-      print('Google Sign-In Error: $e');
+      debugPrint('Google Sign-In Error: $e');
       return null;
     }
   }
@@ -55,9 +56,9 @@ class GoogleSignInService {
     try {
       await _googleSignIn.signOut();
       await _auth.signOut();
-      print('Signed out successfully');
+      debugPrint('Signed out successfully');
     } catch (e) {
-      print(' Sign out error: $e');
+      debugPrint('Sign out error: $e');
       rethrow;
     }
   }
@@ -98,14 +99,14 @@ class GoogleSignInService {
           'emailVerified': user.emailVerified,
           'isActive': true,
         });
-        print(' New user created in Firestore via Google Sign-In');
+        debugPrint('New user created in Firestore via Google Sign-In');
       } else {
         // Update existing user's last active time
         await userDoc.update({'lastActive': FieldValue.serverTimestamp()});
-        print(' User already exists, updated last active');
+        debugPrint('User already exists, updated last active');
       }
     } catch (e) {
-      print(' Error creating user in Firestore: $e');
+      debugPrint('Error creating user in Firestore: $e');
       rethrow;
     }
   }

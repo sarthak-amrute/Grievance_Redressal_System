@@ -1,7 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
+
 <dict>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>We need your location to report issues accurately</string>
+
+	<key>NSCameraUsageDescription</key>
+	<string>We need camera access to take photos of issues</string>
+
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>We need photo library access to upload issue photos</string>
+
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>We need access to your photo library to update your profile picture</string>
+	<key>NSCameraUsageDescription</key>
+	<string>We need access to your camera to take profile pictures</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>

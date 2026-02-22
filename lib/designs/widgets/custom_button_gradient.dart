@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 
 class GradientButton extends StatelessWidget {
@@ -7,10 +5,10 @@ class GradientButton extends StatelessWidget {
   final VoidCallback onPressed;
 
   const GradientButton({
-    Key? key,
+    super.key,
     required this.text,
-    required this.onPressed, required Text child, required ButtonStyle style, required TextStyle textstyle,
-  }) : super(key: key);
+    required this.onPressed,
+  });
 
   @override
   Widget build(BuildContext context) {

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:grievance_redressal_system/loginpage_user.dart';
-import 'package:grievance_redressal_system/homepage_user.dart';
+import 'package:grievance_redressal_system/designs/mainpages/loginpage_user.dart';
+import 'package:grievance_redressal_system/designs/mainpages/homepage_user.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
