@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:grievance_redressal_system/homepage_user.dart';
+import 'package:grievance_redressal_system/designs/mainpages/homepage_user.dart';
 import 'registration_screen.dart';
-import 'google_signin_service.dart';
+import '../../services_/google_signin_service.dart';
 
 class LoginScreenUser extends StatefulWidget {
   const LoginScreenUser({super.key});

@@ -1,7 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:grievance_redressal_system/firebase_options.dart';
-import 'package:grievance_redressal_system/splash_screen_user.dart';
+import 'package:grievance_redressal_system/services_/firebase_options.dart';
+import 'package:grievance_redressal_system/designs/mainpages/splash_screen_user.dart';
 
 Future<void> main() async {
 
