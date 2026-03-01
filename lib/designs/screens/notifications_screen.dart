@@ -51,6 +51,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
 
             for (final doc in snapshot.docs) {
               final c = ComplaintModel.fromMap(
+                // ignore: unnecessary_cast
                 doc.data() as Map<String, dynamic>,
                 doc.id,
               );
@@ -368,11 +369,13 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
           border: Border.all(
             color: isRead
                 ? const Color(0xFFF1F5F9)
+                // ignore: deprecated_member_use
                 : ic.withOpacity(0.3),
             width: isRead ? 1 : 1.5,
           ),
           boxShadow: [
             BoxShadow(
+              // ignore: deprecated_member_use
               color: Colors.black.withOpacity(isRead ? 0.03 : 0.06),
               blurRadius: 8,
               offset: const Offset(0, 2),

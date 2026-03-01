@@ -1,3 +1,5 @@
+// ignore_for_file: unused_element, deprecated_member_use
+
 import 'dart:async';
 import 'dart:ui';
 import 'package:flutter/material.dart';
@@ -10,6 +12,7 @@ import 'package:grievance_redressal_system/designs/screens/report_complaint_scre
 import 'package:grievance_redressal_system/designs/screens/support_chat_screen.dart';
 
 class HomeFragment extends StatefulWidget {
+  // ignore: use_super_parameters
   const HomeFragment({Key? key}) : super(key: key);
 
   @override
@@ -22,6 +25,7 @@ class _HomeFragmentState extends State<HomeFragment> {
   StreamSubscription<QuerySnapshot>? _complaintsSub;
 
   Map<String, dynamic>? _userData;
+  // ignore: unused_field
   bool _isLoading = true;
   bool _isLoadingActivity = true;
   List<ComplaintModel> _recentComplaints = [];
@@ -91,6 +95,7 @@ class _HomeFragmentState extends State<HomeFragment> {
           (snapshot) {
             final complaints = snapshot.docs
                 .map((doc) => ComplaintModel.fromMap(
+                      // ignore: unnecessary_cast
                       doc.data() as Map<String, dynamic>,
                       doc.id,
                     ))

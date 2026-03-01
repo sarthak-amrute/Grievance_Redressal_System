@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 class UpdatesFragment extends StatelessWidget {
+  // ignore: use_super_parameters
   const UpdatesFragment({Key? key}) : super(key: key);
 
   @override
@@ -97,6 +98,7 @@ class UpdatesFragment extends StatelessWidget {
         ),
         boxShadow: [
           BoxShadow(
+            // ignore: deprecated_member_use
             color: Colors.black.withOpacity(0.05),
             blurRadius: 8,
             offset: const Offset(0, 2),

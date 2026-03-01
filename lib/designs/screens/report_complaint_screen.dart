@@ -573,6 +573,7 @@ class _ReportComplaintScreenState extends State<ReportComplaintScreen> {
                   padding: const EdgeInsets.symmetric(
                       horizontal: 16, vertical: 12),
                   itemCount: _categories.length,
+                  // ignore: unnecessary_underscores
                   separatorBuilder: (_, __) =>
                       Divider(height: 1, color: _bg),
                   itemBuilder: (_, i) {
@@ -590,6 +591,7 @@ class _ReportComplaintScreenState extends State<ReportComplaintScreen> {
                             horizontal: 12, vertical: 14),
                         decoration: BoxDecoration(
                           color: isSelected
+                              // ignore: deprecated_member_use
                               ? _primary.withOpacity(0.06)
                               : Colors.transparent,
                           borderRadius: BorderRadius.circular(12),
@@ -601,6 +603,7 @@ class _ReportComplaintScreenState extends State<ReportComplaintScreen> {
                               height: 44,
                               decoration: BoxDecoration(
                                 color: isSelected
+                                    // ignore: deprecated_member_use
                                     ? _primary.withOpacity(0.12)
                                     : cat['bgColor'] as Color,
                                 borderRadius: BorderRadius.circular(12),
@@ -720,6 +723,7 @@ class _ReportComplaintScreenState extends State<ReportComplaintScreen> {
           color: Colors.white,
           borderRadius: BorderRadius.circular(12),
           border: Border.all(
+            // ignore: deprecated_member_use
             color: _primary.withOpacity(0.4),
             width: 1.5,
             style: BorderStyle.solid,
@@ -783,6 +787,7 @@ class _ReportComplaintScreenState extends State<ReportComplaintScreen> {
               width: 22,
               height: 22,
               decoration: BoxDecoration(
+                // ignore: deprecated_member_use
                 color: Colors.black.withOpacity(0.65),
                 shape: BoxShape.circle,
               ),
@@ -825,6 +830,7 @@ class _ReportComplaintScreenState extends State<ReportComplaintScreen> {
                     shape: BoxShape.circle,
                     boxShadow: [
                       BoxShadow(
+                        // ignore: deprecated_member_use
                         color: const Color(0xFFEF4444).withOpacity(0.35),
                         blurRadius: 8,
                         offset: const Offset(0, 3),
@@ -844,6 +850,7 @@ class _ReportComplaintScreenState extends State<ReportComplaintScreen> {
           // Loading overlay
           if (_isLoadingLocation)
             Container(
+              // ignore: deprecated_member_use
               color: Colors.white.withOpacity(0.7),
               child: const Center(
                 child: CircularProgressIndicator(
@@ -866,6 +873,7 @@ class _ReportComplaintScreenState extends State<ReportComplaintScreen> {
                   borderRadius: BorderRadius.circular(8),
                   boxShadow: [
                     BoxShadow(
+                      // ignore: deprecated_member_use
                       color: Colors.black.withOpacity(0.12),
                       blurRadius: 6,
                       offset: const Offset(0, 2),
@@ -981,6 +989,7 @@ class _ReportComplaintScreenState extends State<ReportComplaintScreen> {
         border: Border(top: BorderSide(color: _border)),
         boxShadow: [
           BoxShadow(
+            // ignore: deprecated_member_use
             color: Colors.black.withOpacity(0.06),
             blurRadius: 12,
             offset: const Offset(0, -4),
@@ -1082,6 +1091,7 @@ class _PinShadowPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final paint = Paint()
+      // ignore: deprecated_member_use
       ..color = Colors.black.withOpacity(0.18)
       ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 2);
     canvas.drawOval(

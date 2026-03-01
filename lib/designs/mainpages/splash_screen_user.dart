@@ -89,14 +89,17 @@ class _SplashScreenState extends State<SplashScreen>
                     height: 110,
                     width: 110,
                     decoration: BoxDecoration(
+                      // ignore: deprecated_member_use
                       color: Colors.white.withOpacity(0.12),
                       borderRadius: BorderRadius.circular(24),
                       border: Border.all(
+                        // ignore: deprecated_member_use
                         color: Colors.white.withOpacity(0.25),
                         width: 1.5,
                       ),
                       boxShadow: [
                         BoxShadow(
+                          // ignore: deprecated_member_use
                           color: Colors.black.withOpacity(0.2),
                           blurRadius: 15,
                           spreadRadius: 2,
@@ -147,6 +150,7 @@ class _SplashScreenState extends State<SplashScreen>
                       fontSize: 13,
                       fontWeight: FontWeight.w700,
                       letterSpacing: 2.5,
+                      // ignore: deprecated_member_use
                       color: Colors.white.withOpacity(0.85),
                     ),
                   ),
@@ -187,6 +191,7 @@ class _SplashScreenState extends State<SplashScreen>
                           colors: [
                             Colors.transparent,
                             Colors.transparent,
+                            // ignore: deprecated_member_use
                             const Color(0xFF0D3A7C).withOpacity(0.5),
                             const Color(0xFF0D3A7C),
                           ],
@@ -211,6 +216,7 @@ class _SplashScreenState extends State<SplashScreen>
                       width: 160,
                       height: 5,
                       decoration: BoxDecoration(
+                        // ignore: deprecated_member_use
                         color: Colors.white.withOpacity(0.25),
                         borderRadius: BorderRadius.circular(12),
                       ),

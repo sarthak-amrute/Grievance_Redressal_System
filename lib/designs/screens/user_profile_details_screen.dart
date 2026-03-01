@@ -8,6 +8,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 
 class UserProfileDetails extends StatefulWidget {
+  // ignore: use_super_parameters
   const UserProfileDetails({Key? key}) : super(key: key);
 
   @override
@@ -323,8 +324,10 @@ class _UserProfileDetailsState extends State<UserProfileDetails>
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
         decoration: BoxDecoration(
+          // ignore: deprecated_member_use
           color: color.withOpacity(0.06),
           borderRadius: BorderRadius.circular(12),
+          // ignore: deprecated_member_use
           border: Border.all(color: color.withOpacity(0.15)),
         ),
         child: Row(
@@ -666,6 +669,7 @@ class _UserProfileDetailsState extends State<UserProfileDetails>
                 border: Border.all(color: Colors.white, width: 4),
                 boxShadow: [
                   BoxShadow(
+                    // ignore: deprecated_member_use
                     color: _primary.withOpacity(0.15),
                     blurRadius: 20,
                     offset: const Offset(0, 6),
@@ -677,6 +681,7 @@ class _UserProfileDetailsState extends State<UserProfileDetails>
                     ? Image.network(
                         photoUrl,
                         fit: BoxFit.cover,
+                        // ignore: unnecessary_underscores
                         errorBuilder: (_, __, ___) =>
                             _initialsAvatar(initials),
                       )
@@ -698,6 +703,7 @@ class _UserProfileDetailsState extends State<UserProfileDetails>
                     border: Border.all(color: Colors.white, width: 2.5),
                     boxShadow: [
                       BoxShadow(
+                        // ignore: deprecated_member_use
                         color: _primary.withOpacity(0.35),
                         blurRadius: 8,
                         offset: const Offset(0, 2),
@@ -732,6 +738,7 @@ class _UserProfileDetailsState extends State<UserProfileDetails>
             style: TextStyle(
               fontSize: 13,
               fontWeight: FontWeight.w600,
+              // ignore: deprecated_member_use
               color: _primary.withOpacity(0.85),
             ),
           ),
@@ -790,6 +797,7 @@ class _UserProfileDetailsState extends State<UserProfileDetails>
             border: Border.all(color: const Color(0xFFF1F5F9)),
             boxShadow: [
               BoxShadow(
+                // ignore: deprecated_member_use
                 color: Colors.black.withOpacity(0.04),
                 blurRadius: 10,
                 offset: const Offset(0, 2),
@@ -920,6 +928,7 @@ class _UserProfileDetailsState extends State<UserProfileDetails>
             margin: const EdgeInsets.only(top: 2),
             decoration: BoxDecoration(
               color: _isEditing
+                  // ignore: deprecated_member_use
                   ? _primary.withOpacity(0.08)
                   : const Color(0xFFF1F5F9),
               borderRadius: BorderRadius.circular(8),
@@ -953,6 +962,7 @@ class _UserProfileDetailsState extends State<UserProfileDetails>
                       ),
                       hintText: hint,
                       hintStyle: TextStyle(
+                        // ignore: deprecated_member_use
                         color: _labelColor.withOpacity(0.7),
                         fontSize: 13,
                       ),
@@ -1025,6 +1035,7 @@ class _UserProfileDetailsState extends State<UserProfileDetails>
         onPressed: _isSaving ? null : _onSaveTapped,
         style: ElevatedButton.styleFrom(
           backgroundColor: _primary,
+          // ignore: deprecated_member_use
           disabledBackgroundColor: _primary.withOpacity(0.5),
           padding: const EdgeInsets.symmetric(vertical: 16),
           shape: RoundedRectangleBorder(

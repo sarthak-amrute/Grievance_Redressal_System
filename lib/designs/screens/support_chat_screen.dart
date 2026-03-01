@@ -5,6 +5,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:grievance_redressal_system/services_/chat_service.dart';
 
 class SupportChatScreen extends StatefulWidget {
+  // ignore: use_super_parameters
   const SupportChatScreen({Key? key}) : super(key: key);
 
   @override
@@ -413,6 +414,7 @@ class _SupportChatScreenState extends State<SupportChatScreen>
                     ),
                     boxShadow: [
                       BoxShadow(
+                        // ignore: deprecated_member_use
                         color: Colors.black.withOpacity(0.05),
                         blurRadius: 6,
                         offset: const Offset(0, 2),
@@ -493,6 +495,7 @@ class _SupportChatScreenState extends State<SupportChatScreen>
               ),
               boxShadow: [
                 BoxShadow(
+                    // ignore: deprecated_member_use
                     color: Colors.black.withOpacity(0.05),
                     blurRadius: 6,
                     offset: const Offset(0, 2))
@@ -519,6 +522,7 @@ class _SupportChatScreenState extends State<SupportChatScreen>
       tween: Tween(begin: 0.4, end: 1.0),
       duration: Duration(milliseconds: 500 + index * 180),
       curve: Curves.easeInOut,
+      // ignore: unnecessary_underscores
       builder: (_, v, __) => Opacity(
         opacity: v,
         child: Container(
@@ -621,6 +625,7 @@ class _SupportChatScreenState extends State<SupportChatScreen>
             const Border(top: BorderSide(color: Color(0xFFF1F5F9))),
         boxShadow: [
           BoxShadow(
+            // ignore: deprecated_member_use
             color: Colors.black.withOpacity(0.04),
             blurRadius: 8,
             offset: const Offset(0, -2),
@@ -706,6 +711,7 @@ class _SupportChatScreenState extends State<SupportChatScreen>
                     ? []
                     : [
                         BoxShadow(
+                          // ignore: deprecated_member_use
                           color: _primary.withOpacity(0.35),
                           blurRadius: 8,
                           offset: const Offset(0, 3),

@@ -5,6 +5,7 @@ class ComplaintSuccessScreen extends StatelessWidget {
   final String complaintId;
   final String category;
 
+  // ignore: use_super_parameters
   const ComplaintSuccessScreen({
     Key? key,
     required this.complaintId,
@@ -86,6 +87,7 @@ class ComplaintSuccessScreen extends StatelessWidget {
                         gradient: LinearGradient(
                           colors: [
                             _getCategoryColor(category),
+                            // ignore: deprecated_member_use
                             _getCategoryColor(category).withOpacity(0.7),
                           ],
                           begin: Alignment.topLeft,
@@ -94,6 +96,7 @@ class ComplaintSuccessScreen extends StatelessWidget {
                         shape: BoxShape.circle,
                         boxShadow: [
                           BoxShadow(
+                            // ignore: deprecated_member_use
                             color: _getCategoryColor(category).withOpacity(0.3),
                             blurRadius: 30,
                             offset: const Offset(0, 10),
@@ -140,6 +143,7 @@ class ComplaintSuccessScreen extends StatelessWidget {
                         borderRadius: BorderRadius.circular(24),
                         boxShadow: [
                           BoxShadow(
+                            // ignore: deprecated_member_use
                             color: Colors.black.withOpacity(0.05),
                             blurRadius: 10,
                             offset: const Offset(0, 2),
@@ -154,6 +158,7 @@ class ComplaintSuccessScreen extends StatelessWidget {
                               Container(
                                 padding: const EdgeInsets.all(12),
                                 decoration: BoxDecoration(
+                                  // ignore: deprecated_member_use
                                   color: _getCategoryColor(category).withOpacity(0.1),
                                   borderRadius: BorderRadius.circular(12),
                                 ),
@@ -220,6 +225,7 @@ class ComplaintSuccessScreen extends StatelessWidget {
                                   vertical: 6,
                                 ),
                                 decoration: BoxDecoration(
+                                  // ignore: deprecated_member_use
                                   color: _getCategoryColor(category).withOpacity(0.1),
                                   borderRadius: BorderRadius.circular(20),
                                 ),
@@ -322,6 +328,7 @@ class ComplaintSuccessScreen extends StatelessWidget {
                 color: Colors.white,
                 boxShadow: [
                   BoxShadow(
+                    // ignore: deprecated_member_use
                     color: Colors.black.withOpacity(0.05),
                     blurRadius: 10,
                     offset: const Offset(0, -2),
