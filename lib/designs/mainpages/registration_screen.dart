@@ -141,9 +141,12 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
         'isActive': true,
       });
       
+      // ignore: avoid_print
       print('User created in Firestore successfully');
     } catch (e) {
+      // ignore: avoid_print
       print(' Error creating user in Firestore: $e');
+      // ignore: use_rethrow_when_possible
       throw e;
     }
   }
@@ -162,6 +165,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
               Container(
                 padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
+                  // ignore: deprecated_member_use
                   color: const Color(0xFF195DE6).withOpacity(0.1),
                   shape: BoxShape.circle,
                 ),
@@ -594,6 +598,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
           // Loading overlay
           if (isLoading)
             Container(
+              // ignore: deprecated_member_use
               color: Colors.black.withOpacity(0.5),
               child: const Center(
                 child: CircularProgressIndicator(
@@ -710,6 +715,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                         height: 40,
                         decoration: BoxDecoration(
                           color: isSelected 
+                              // ignore: deprecated_member_use
                               ? const Color(0xFF195DE6).withOpacity(0.1)
                               : (isDarkMode ? const Color(0xFF334155) : const Color(0xFFF1F5F9)),
                           borderRadius: BorderRadius.circular(8),
@@ -768,6 +774,7 @@ class DotPatternPainter extends CustomPainter {
   void paint(Canvas canvas, Size size) {
     final paint = Paint()
       ..color = (isDarkMode ? const Color(0xFF2D3748) : const Color(0xFFCBD5E1))
+          // ignore: deprecated_member_use
           .withOpacity(0.6)
       ..style = PaintingStyle.fill;
 

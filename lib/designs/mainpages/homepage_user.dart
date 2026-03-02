@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:grievance_redressal_system/designs/screens/report_complaint_screen.dart';
@@ -7,6 +9,7 @@ import '../fragments/updates_fragment.dart';
 import '../fragments/profile_fragment.dart';
 
 class HomepageUser extends StatefulWidget {
+  // ignore: use_super_parameters
   const HomepageUser({Key? key}) : super(key: key);
 
   @override

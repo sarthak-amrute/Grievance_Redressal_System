@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -6,6 +8,7 @@ import 'package:grievance_redressal_system/designs/models/complaint_model.dart';
 import 'package:grievance_redressal_system/designs/screens/complaint_detail_screen.dart';
 
 class ActivityFragment extends StatefulWidget {
+  // ignore: use_super_parameters
   const ActivityFragment({Key? key}) : super(key: key);
 
   @override
@@ -41,6 +44,7 @@ class _ActivityFragmentState extends State<ActivityFragment> {
           (snapshot) {
             final complaints = snapshot.docs
                 .map((doc) => ComplaintModel.fromMap(
+                      // ignore: unnecessary_cast
                       doc.data() as Map<String, dynamic>,
                       doc.id,
                     ))
@@ -276,6 +280,7 @@ class _ActivityFragmentState extends State<ActivityFragment> {
             child: ListView.separated(
               scrollDirection: Axis.horizontal,
               padding: const EdgeInsets.symmetric(horizontal: 20),
+              // ignore: unnecessary_underscores
               separatorBuilder: (_, __) => const SizedBox(width: 10),
               itemCount: filters.length,
               itemBuilder: (_, i) {
@@ -390,6 +395,7 @@ class _ActivityFragmentState extends State<ActivityFragment> {
     return ListView.separated(
       padding: const EdgeInsets.fromLTRB(16, 8, 16, 120),
       itemCount: complaints.length,
+      // ignore: unnecessary_underscores
       separatorBuilder: (_, __) => const SizedBox(height: 14),
       itemBuilder: (_, i) => _buildCard(complaints[i]),
     );

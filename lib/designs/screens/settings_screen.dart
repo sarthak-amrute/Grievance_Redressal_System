@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class SettingsScreen extends StatefulWidget {
+  // ignore: use_super_parameters
   const SettingsScreen({Key? key}) : super(key: key);
 
   @override
@@ -10,7 +11,9 @@ class SettingsScreen extends StatefulWidget {
 }
 
 class _SettingsScreenState extends State<SettingsScreen> {
+  // ignore: unused_field
   final _auth = FirebaseAuth.instance;
+  // ignore: unused_field
   final _firestore = FirebaseFirestore.instance;
 
   // Toggle states
@@ -159,6 +162,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
             _buildCard([
               _toggleItem(
                 icon: Icons.dark_mode_outlined,
+                // ignore: deprecated_member_use
                 iconBg: const Color(0xFF1E293B).withOpacity(0.08),
                 iconColor: const Color(0xFF1E293B),
                 label: 'Dark Mode',
@@ -299,6 +303,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
         border: Border.all(color: const Color(0xFFF1F5F9)),
         boxShadow: [
           BoxShadow(
+            // ignore: deprecated_member_use
             color: Colors.black.withOpacity(0.04),
             blurRadius: 10,
             offset: const Offset(0, 2),
@@ -359,6 +364,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
           Switch.adaptive(
             value: value,
             onChanged: onChanged,
+            // ignore: deprecated_member_use
             activeColor: _primary,
           ),
         ],

@@ -1,3 +1,6 @@
+// ignore_for_file: deprecated_member_use
+// ignore: unused_import
+import 'admin_login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -17,20 +20,20 @@ class _LoginScreenUserState extends State<LoginScreenUser> {
   bool isDarkMode = false;
   String selectedCountryCode = '+91';
   bool isLoading = false;
-  
+
   // Controllers
   final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  
+
   // Firebase instances
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final GoogleSignInService _googleSignInService = GoogleSignInService();
-  
+
   // For phone verification
   String? _verificationId;
-  
+
   final List<Map<String, String>> countryCodes = [
     {'code': '+1', 'name': 'US'},
     {'code': '+44', 'name': 'UK'},
@@ -53,11 +56,15 @@ class _LoginScreenUserState extends State<LoginScreenUser> {
   }
 
   // Create or Update User in Firestore
-  Future<void> createUserInFirestore(User user, {String? fullName, String? phoneNumber}) async {
+  Future<void> createUserInFirestore(
+    User user, {
+    String? fullName,
+    String? phoneNumber,
+  }) async {
     try {
       DocumentReference userDoc = _firestore.collection('users').doc(user.uid);
       DocumentSnapshot docSnapshot = await userDoc.get();
-      
+
       if (!docSnapshot.exists) {
         await userDoc.set({
           'uid': user.uid,
@@ -66,39 +73,27 @@ class _LoginScreenUserState extends State<LoginScreenUser> {
           'fullName': fullName ?? user.displayName ?? '',
           'role': 'citizen',
           'profilePhoto': user.photoURL ?? '',
-          'address': {
-            'street': '',
-            'city': '',
-            'state': '',
-            'pincode': ''
-          },
+          'address': {'street': '', 'city': '', 'state': '', 'pincode': ''},
           'createdAt': FieldValue.serverTimestamp(),
           'lastActive': FieldValue.serverTimestamp(),
-          'preferences': {
-            'notifications': true,
-            'darkMode': false
-          },
+          'preferences': {'notifications': true, 'darkMode': false},
           'grievances': [],
           'emailVerified': user.emailVerified,
           'isActive': true,
         });
-        print(' New user created in Firestore');
       } else {
-        await userDoc.update({
-          'lastActive': FieldValue.serverTimestamp(),
-        });
-        print('User updated in Firestore');
+        await userDoc.update({'lastActive': FieldValue.serverTimestamp()});
       }
     } catch (e) {
+      // ignore: avoid_print
       print('Firestore Error: $e');
-      // Don't throw error, just log it
     }
   }
 
   // Phone Authentication - Send OTP
   Future<void> _sendOTP() async {
     String phone = _phoneController.text.trim();
-    
+
     if (phone.isEmpty) {
       _showSnackBar('Please enter phone number');
       return;
@@ -113,6 +108,7 @@ class _LoginScreenUserState extends State<LoginScreenUser> {
     setState(() => isLoading = true);
 
     String phoneNumber = selectedCountryCode + phone;
+    // ignore: avoid_print
     print('📱 Sending OTP to: $phoneNumber');
 
     try {
@@ -120,29 +116,27 @@ class _LoginScreenUserState extends State<LoginScreenUser> {
         phoneNumber: phoneNumber,
         timeout: const Duration(seconds: 60),
         verificationCompleted: (PhoneAuthCredential credential) async {
-          print('Auto verification completed');
           await _signInWithCredential(credential);
         },
         verificationFailed: (FirebaseAuthException e) {
-          print(' Verification failed: ${e.code} - ${e.message}');
           if (!mounted) return;
           setState(() => isLoading = false);
-          
+
           String errorMessage = 'Verification failed';
           if (e.code == 'invalid-phone-number') {
             errorMessage = 'Invalid phone number format';
           } else if (e.code == 'too-many-requests') {
             errorMessage = 'Too many requests. Try later.';
           } else if (e.code == 'quota-exceeded') {
-            errorMessage = 'SMS quota exceeded. Use test number: +91 1234567890';
+            errorMessage =
+                'SMS quota exceeded. Use test number: +91 1234567890';
           } else {
             errorMessage = e.message ?? 'Verification failed';
           }
-          
+
           _showSnackBar(errorMessage);
         },
         codeSent: (String verificationId, int? resendToken) {
-          print(' OTP sent successfully');
           if (!mounted) return;
           setState(() {
             _verificationId = verificationId;
@@ -151,12 +145,10 @@ class _LoginScreenUserState extends State<LoginScreenUser> {
           _showOTPDialog();
         },
         codeAutoRetrievalTimeout: (String verificationId) {
-          print(' Auto retrieval timeout');
           _verificationId = verificationId;
         },
       );
     } catch (e) {
-      print(' Error sending OTP: $e');
       if (!mounted) return;
       setState(() => isLoading = false);
       _showSnackBar('Error: ${e.toString()}');
@@ -177,7 +169,6 @@ class _LoginScreenUserState extends State<LoginScreenUser> {
 
     if (!mounted) return;
     setState(() => isLoading = true);
-    print('Verifying OTP: $otp');
 
     try {
       PhoneAuthCredential credential = PhoneAuthProvider.credential(
@@ -186,10 +177,9 @@ class _LoginScreenUserState extends State<LoginScreenUser> {
       );
       await _signInWithCredential(credential);
     } on FirebaseAuthException catch (e) {
-      print('OTP verification failed: ${e.code}');
       if (!mounted) return;
       setState(() => isLoading = false);
-      
+
       String errorMessage = 'Invalid OTP';
       if (e.code == 'invalid-verification-code') {
         errorMessage = 'Invalid OTP. Please try again.';
@@ -198,10 +188,9 @@ class _LoginScreenUserState extends State<LoginScreenUser> {
       } else {
         errorMessage = 'Verification failed. Please try again.';
       }
-      
+
       _showSnackBar(errorMessage);
     } catch (e) {
-      print('Error: $e');
       if (!mounted) return;
       setState(() => isLoading = false);
       _showSnackBar('Error: ${e.toString()}');
@@ -211,32 +200,29 @@ class _LoginScreenUserState extends State<LoginScreenUser> {
   // Sign in with credential
   Future<void> _signInWithCredential(PhoneAuthCredential credential) async {
     try {
-      UserCredential userCredential = await _auth.signInWithCredential(credential);
-      
+      UserCredential userCredential = await _auth.signInWithCredential(
+        credential,
+      );
+
       if (userCredential.user != null) {
-        print('Phone login successful');
-        
-        // Create/update user in Firestore
         await createUserInFirestore(
           userCredential.user!,
           phoneNumber: selectedCountryCode + _phoneController.text.trim(),
         );
-        
+
         if (!mounted) return;
         setState(() => isLoading = false);
-        
+
         _showSnackBar('Login successful!');
-        
-        // Navigate to home screen
+
         if (mounted) {
           Navigator.pushReplacement(
-            context, 
-            MaterialPageRoute(builder: (_) => const HomepageUser())
+            context,
+            MaterialPageRoute(builder: (_) => const HomepageUser()),
           );
         }
       }
     } catch (e) {
-      print(' Sign in error: $e');
       if (!mounted) return;
       setState(() => isLoading = false);
       _showSnackBar('Sign in failed: ${e.toString()}');
@@ -245,7 +231,8 @@ class _LoginScreenUserState extends State<LoginScreenUser> {
 
   // Email/Password Login
   Future<void> _loginWithEmail() async {
-    if (_emailController.text.trim().isEmpty || _passwordController.text.trim().isEmpty) {
+    if (_emailController.text.trim().isEmpty ||
+        _passwordController.text.trim().isEmpty) {
       _showSnackBar('Please enter email and password');
       return;
     }
@@ -258,31 +245,26 @@ class _LoginScreenUserState extends State<LoginScreenUser> {
         email: _emailController.text.trim(),
         password: _passwordController.text.trim(),
       );
-      
+
       if (userCredential.user != null) {
-        print(' Email login successful');
-        
-        // Create/update user in Firestore
         await createUserInFirestore(userCredential.user!);
-        
+
         if (!mounted) return;
         setState(() => isLoading = false);
-        
-        _showSnackBar('Login successful! ');
-        
-        // Navigate to home screen
+
+        _showSnackBar('Login successful!');
+
         if (mounted) {
           Navigator.pushReplacement(
-            context, 
-            MaterialPageRoute(builder: (_) => const HomepageUser())
+            context,
+            MaterialPageRoute(builder: (_) => const HomepageUser()),
           );
         }
       }
     } on FirebaseAuthException catch (e) {
-      print('Email login failed: ${e.code}');
       if (!mounted) return;
       setState(() => isLoading = false);
-      
+
       String message = '';
       if (e.code == 'user-not-found') {
         message = 'No user found. Please register first.';
@@ -299,7 +281,6 @@ class _LoginScreenUserState extends State<LoginScreenUser> {
       }
       _showSnackBar(message);
     } catch (e) {
-      print('Error: $e');
       if (!mounted) return;
       setState(() => isLoading = false);
       _showSnackBar('Error: $e');
@@ -312,36 +293,34 @@ class _LoginScreenUserState extends State<LoginScreenUser> {
     setState(() => isLoading = true);
 
     try {
-      UserCredential? userCredential = await _googleSignInService.signInWithGoogle();
-      
+      UserCredential? userCredential = await _googleSignInService
+          .signInWithGoogle();
+
       if (!mounted) return;
       setState(() => isLoading = false);
-      
+
       if (userCredential != null && userCredential.user != null) {
         _showSnackBar('Google sign in successful!');
-        
-        // Navigate to home screen
+
         if (mounted) {
           Navigator.pushReplacement(
-            context, 
-            MaterialPageRoute(builder: (_) => const HomepageUser())
+            context,
+            MaterialPageRoute(builder: (_) => const HomepageUser()),
           );
         }
       }
     } catch (e) {
-      print(' Google sign in failed: $e');
       if (!mounted) return;
       setState(() => isLoading = false);
       _showSnackBar('Google sign in failed: $e');
     }
   }
 
-  // Show OTP Dialog - FIXED VERSION
+  // Show OTP Dialog
   void _showOTPDialog() {
-    // Create a new controller for OTP dialog
     final TextEditingController otpController = TextEditingController();
     bool isDialogLoading = false;
-    
+
     showDialog(
       context: context,
       barrierDismissible: false,
@@ -349,8 +328,12 @@ class _LoginScreenUserState extends State<LoginScreenUser> {
         return StatefulBuilder(
           builder: (context, setDialogState) {
             return AlertDialog(
-              backgroundColor: isDarkMode ? const Color(0xFF1A2233) : Colors.white,
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+              backgroundColor: isDarkMode
+                  ? const Color(0xFF1A2233)
+                  : Colors.white,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(16),
+              ),
               title: Text(
                 'Enter OTP',
                 style: TextStyle(
@@ -362,9 +345,11 @@ class _LoginScreenUserState extends State<LoginScreenUser> {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Text(
-                    'We sent a code to ${selectedCountryCode} ${_phoneController.text}',
+                    'We sent a code to $selectedCountryCode ${_phoneController.text}',
                     style: TextStyle(
-                      color: isDarkMode ? const Color(0xFF94A3B8) : const Color(0xFF64748B),
+                      color: isDarkMode
+                          ? const Color(0xFF94A3B8)
+                          : const Color(0xFF64748B),
                       fontSize: 14,
                     ),
                   ),
@@ -377,13 +362,17 @@ class _LoginScreenUserState extends State<LoginScreenUser> {
                     style: TextStyle(
                       fontSize: 18,
                       letterSpacing: 4,
-                      color: isDarkMode ? Colors.white : const Color(0xFF0F172A),
+                      color: isDarkMode
+                          ? Colors.white
+                          : const Color(0xFF0F172A),
                     ),
                     decoration: InputDecoration(
                       hintText: '000000',
                       counterText: '',
                       filled: true,
-                      fillColor: isDarkMode ? const Color(0xFF334155) : const Color(0xFFF1F5F9),
+                      fillColor: isDarkMode
+                          ? const Color(0xFF334155)
+                          : const Color(0xFFF1F5F9),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(12),
                         borderSide: BorderSide.none,
@@ -399,41 +388,41 @@ class _LoginScreenUserState extends State<LoginScreenUser> {
               ),
               actions: [
                 TextButton(
-                  onPressed: isDialogLoading ? null : () {
-                    otpController.dispose();
-                    _verificationId = null;
-                    Navigator.of(dialogContext).pop();
-                  },
+                  onPressed: isDialogLoading
+                      ? null
+                      : () {
+                          otpController.dispose();
+                          _verificationId = null;
+                          Navigator.of(dialogContext).pop();
+                        },
                   child: Text(
                     'Cancel',
                     style: TextStyle(
-                      color: isDarkMode ? const Color(0xFF94A3B8) : const Color(0xFF64748B),
+                      color: isDarkMode
+                          ? const Color(0xFF94A3B8)
+                          : const Color(0xFF64748B),
                     ),
                   ),
                 ),
                 ElevatedButton(
-                  onPressed: isDialogLoading ? null : () async {
-                    String otp = otpController.text.trim();
-                    if (otp.length == 6) {
-                      setDialogState(() {
-                        isDialogLoading = true;
-                      });
-                      
-                      // Close dialog first
-                      Navigator.of(dialogContext).pop();
-                      otpController.dispose();
-                      
-                      // Then verify OTP
-                      await _verifyOTP(otp);
-                    } else {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text('Please enter 6-digit OTP'),
-                          backgroundColor: Colors.red,
-                        ),
-                      );
-                    }
-                  },
+                  onPressed: isDialogLoading
+                      ? null
+                      : () async {
+                          String otp = otpController.text.trim();
+                          if (otp.length == 6) {
+                            setDialogState(() => isDialogLoading = true);
+                            Navigator.of(dialogContext).pop();
+                            otpController.dispose();
+                            await _verifyOTP(otp);
+                          } else {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text('Please enter 6-digit OTP'),
+                                backgroundColor: Colors.red,
+                              ),
+                            );
+                          }
+                        },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xFF195DE6),
                     shape: RoundedRectangleBorder(
@@ -453,12 +442,14 @@ class _LoginScreenUserState extends State<LoginScreenUser> {
   // Show SnackBar
   void _showSnackBar(String message) {
     if (!mounted) return;
-    
+
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(message),
-        backgroundColor: message.contains('successful') || message.contains('Login successful') 
-            ? Colors.green 
+        backgroundColor:
+            message.contains('successful') ||
+                message.contains('Login successful')
+            ? Colors.green
             : const Color(0xFF195DE6),
         behavior: SnackBarBehavior.floating,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
@@ -470,7 +461,9 @@ class _LoginScreenUserState extends State<LoginScreenUser> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: isDarkMode ? const Color(0xFF111621) : const Color(0xFFF6F6F8),
+      backgroundColor: isDarkMode
+          ? const Color(0xFF111621)
+          : const Color(0xFFF6F6F8),
       body: Stack(
         children: [
           Positioned.fill(
@@ -540,11 +533,7 @@ class _LoginScreenUserState extends State<LoginScreenUser> {
               ),
             ],
           ),
-          child: const Icon(
-            Icons.location_city,
-            size: 48,
-            color: Colors.white,
-          ),
+          child: const Icon(Icons.location_city, size: 48, color: Colors.white),
         ),
         const SizedBox(height: 24),
         Text(
@@ -563,7 +552,9 @@ class _LoginScreenUserState extends State<LoginScreenUser> {
           'Log in to track your grievances and make your city better.',
           style: TextStyle(
             fontSize: 16,
-            color: isDarkMode ? const Color(0xFF94A3B8) : const Color(0xFF64748B),
+            color: isDarkMode
+                ? const Color(0xFF94A3B8)
+                : const Color(0xFF64748B),
             height: 1.5,
           ),
           textAlign: TextAlign.center,
@@ -580,8 +571,8 @@ class _LoginScreenUserState extends State<LoginScreenUser> {
         Container(
           padding: const EdgeInsets.all(4),
           decoration: BoxDecoration(
-            color: isDarkMode 
-                ? const Color(0xFF1A2233) 
+            color: isDarkMode
+                ? const Color(0xFF1A2233)
                 : const Color(0xFFE2E8F0).withOpacity(0.5),
             borderRadius: BorderRadius.circular(16),
           ),
@@ -599,13 +590,15 @@ class _LoginScreenUserState extends State<LoginScreenUser> {
           height: 56,
           width: double.infinity,
           child: ElevatedButton(
-            onPressed: isLoading ? null : () {
-              if (isPhoneSelected) {
-                _sendOTP();
-              } else {
-                _loginWithEmail();
-              }
-            },
+            onPressed: isLoading
+                ? null
+                : () {
+                    if (isPhoneSelected) {
+                      _sendOTP();
+                    } else {
+                      _loginWithEmail();
+                    }
+                  },
             style: ElevatedButton.styleFrom(
               backgroundColor: const Color(0xFF195DE6),
               foregroundColor: Colors.white,
@@ -639,7 +632,9 @@ class _LoginScreenUserState extends State<LoginScreenUser> {
               "Don't have an account? ",
               style: TextStyle(
                 fontSize: 14,
-                color: isDarkMode ? const Color(0xFF94A3B8) : const Color(0xFF64748B),
+                color: isDarkMode
+                    ? const Color(0xFF94A3B8)
+                    : const Color(0xFF64748B),
               ),
             ),
             GestureDetector(
@@ -665,7 +660,9 @@ class _LoginScreenUserState extends State<LoginScreenUser> {
           children: [
             Expanded(
               child: Divider(
-                color: isDarkMode ? const Color(0xFF334155) : const Color(0xFFE2E8F0),
+                color: isDarkMode
+                    ? const Color(0xFF334155)
+                    : const Color(0xFFE2E8F0),
               ),
             ),
             Padding(
@@ -674,13 +671,17 @@ class _LoginScreenUserState extends State<LoginScreenUser> {
                 'Or continue with',
                 style: TextStyle(
                   fontSize: 14,
-                  color: isDarkMode ? const Color(0xFF94A3B8) : const Color(0xFF94A3B8),
+                  color: isDarkMode
+                      ? const Color(0xFF94A3B8)
+                      : const Color(0xFF94A3B8),
                 ),
               ),
             ),
             Expanded(
               child: Divider(
-                color: isDarkMode ? const Color(0xFF334155) : const Color(0xFFE2E8F0),
+                color: isDarkMode
+                    ? const Color(0xFF334155)
+                    : const Color(0xFFE2E8F0),
               ),
             ),
           ],
@@ -692,9 +693,13 @@ class _LoginScreenUserState extends State<LoginScreenUser> {
           child: OutlinedButton(
             onPressed: isLoading ? null : _signInWithGoogle,
             style: OutlinedButton.styleFrom(
-              backgroundColor: isDarkMode ? const Color(0xFF1A2233) : Colors.white,
+              backgroundColor: isDarkMode
+                  ? const Color(0xFF1A2233)
+                  : Colors.white,
               side: BorderSide(
-                color: isDarkMode ? const Color(0xFF334155) : const Color(0xFFE2E8F0),
+                color: isDarkMode
+                    ? const Color(0xFF334155)
+                    : const Color(0xFFE2E8F0),
               ),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(16),
@@ -771,7 +776,9 @@ class _LoginScreenUserState extends State<LoginScreenUser> {
               fontWeight: FontWeight.w500,
               color: isSelected
                   ? const Color(0xFF195DE6)
-                  : (isDarkMode ? const Color(0xFF94A3B8) : const Color(0xFF64748B)),
+                  : (isDarkMode
+                        ? const Color(0xFF94A3B8)
+                        : const Color(0xFF64748B)),
             ),
           ),
         ),
@@ -789,7 +796,9 @@ class _LoginScreenUserState extends State<LoginScreenUser> {
           style: TextStyle(
             fontSize: 14,
             fontWeight: FontWeight.w500,
-            color: isDarkMode ? const Color(0xFFCBD5E1) : const Color(0xFF334155),
+            color: isDarkMode
+                ? const Color(0xFFCBD5E1)
+                : const Color(0xFF334155),
           ),
         ),
         const SizedBox(height: 4),
@@ -799,7 +808,9 @@ class _LoginScreenUserState extends State<LoginScreenUser> {
             color: isDarkMode ? const Color(0xFF1A2233) : Colors.white,
             borderRadius: BorderRadius.circular(16),
             border: Border.all(
-              color: isDarkMode ? const Color(0xFF334155) : const Color(0xFFE2E8F0),
+              color: isDarkMode
+                  ? const Color(0xFF334155)
+                  : const Color(0xFFE2E8F0),
             ),
           ),
           child: Row(
@@ -816,20 +827,26 @@ class _LoginScreenUserState extends State<LoginScreenUser> {
                         style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w500,
-                          color: isDarkMode ? const Color(0xFF94A3B8) : const Color(0xFF64748B),
+                          color: isDarkMode
+                              ? const Color(0xFF94A3B8)
+                              : const Color(0xFF64748B),
                         ),
                       ),
                       const SizedBox(width: 4),
                       Icon(
                         Icons.arrow_drop_down,
-                        color: isDarkMode ? const Color(0xFF94A3B8) : const Color(0xFF94A3B8),
+                        color: isDarkMode
+                            ? const Color(0xFF94A3B8)
+                            : const Color(0xFF94A3B8),
                         size: 20,
                       ),
                       const SizedBox(width: 8),
                       Container(
                         height: 24,
                         width: 1,
-                        color: isDarkMode ? const Color(0xFF334155) : const Color(0xFFE2E8F0),
+                        color: isDarkMode
+                            ? const Color(0xFF334155)
+                            : const Color(0xFFE2E8F0),
                       ),
                     ],
                   ),
@@ -846,7 +863,9 @@ class _LoginScreenUserState extends State<LoginScreenUser> {
                   decoration: InputDecoration(
                     hintText: '1234567890',
                     hintStyle: TextStyle(
-                      color: isDarkMode ? const Color(0xFF475569) : const Color(0xFF94A3B8),
+                      color: isDarkMode
+                          ? const Color(0xFF475569)
+                          : const Color(0xFF94A3B8),
                     ),
                     border: InputBorder.none,
                     contentPadding: const EdgeInsets.symmetric(horizontal: 16),
@@ -870,7 +889,9 @@ class _LoginScreenUserState extends State<LoginScreenUser> {
           style: TextStyle(
             fontSize: 14,
             fontWeight: FontWeight.w500,
-            color: isDarkMode ? const Color(0xFFCBD5E1) : const Color(0xFF334155),
+            color: isDarkMode
+                ? const Color(0xFFCBD5E1)
+                : const Color(0xFF334155),
           ),
         ),
         const SizedBox(height: 4),
@@ -880,7 +901,9 @@ class _LoginScreenUserState extends State<LoginScreenUser> {
             color: isDarkMode ? const Color(0xFF1A2233) : Colors.white,
             borderRadius: BorderRadius.circular(16),
             border: Border.all(
-              color: isDarkMode ? const Color(0xFF334155) : const Color(0xFFE2E8F0),
+              color: isDarkMode
+                  ? const Color(0xFF334155)
+                  : const Color(0xFFE2E8F0),
             ),
           ),
           child: TextField(
@@ -893,13 +916,17 @@ class _LoginScreenUserState extends State<LoginScreenUser> {
             decoration: InputDecoration(
               hintText: 'your.email@example.com',
               hintStyle: TextStyle(
-                color: isDarkMode ? const Color(0xFF475569) : const Color(0xFF94A3B8),
+                color: isDarkMode
+                    ? const Color(0xFF475569)
+                    : const Color(0xFF94A3B8),
               ),
               border: InputBorder.none,
               contentPadding: const EdgeInsets.all(16),
               prefixIcon: Icon(
                 Icons.email_outlined,
-                color: isDarkMode ? const Color(0xFF94A3B8) : const Color(0xFF94A3B8),
+                color: isDarkMode
+                    ? const Color(0xFF94A3B8)
+                    : const Color(0xFF94A3B8),
                 size: 20,
               ),
             ),
@@ -911,7 +938,9 @@ class _LoginScreenUserState extends State<LoginScreenUser> {
           style: TextStyle(
             fontSize: 14,
             fontWeight: FontWeight.w500,
-            color: isDarkMode ? const Color(0xFFCBD5E1) : const Color(0xFF334155),
+            color: isDarkMode
+                ? const Color(0xFFCBD5E1)
+                : const Color(0xFF334155),
           ),
         ),
         const SizedBox(height: 4),
@@ -921,7 +950,9 @@ class _LoginScreenUserState extends State<LoginScreenUser> {
             color: isDarkMode ? const Color(0xFF1A2233) : Colors.white,
             borderRadius: BorderRadius.circular(16),
             border: Border.all(
-              color: isDarkMode ? const Color(0xFF334155) : const Color(0xFFE2E8F0),
+              color: isDarkMode
+                  ? const Color(0xFF334155)
+                  : const Color(0xFFE2E8F0),
             ),
           ),
           child: TextField(
@@ -934,13 +965,17 @@ class _LoginScreenUserState extends State<LoginScreenUser> {
             decoration: InputDecoration(
               hintText: 'Enter your password',
               hintStyle: TextStyle(
-                color: isDarkMode ? const Color(0xFF475569) : const Color(0xFF94A3B8),
+                color: isDarkMode
+                    ? const Color(0xFF475569)
+                    : const Color(0xFF94A3B8),
               ),
               border: InputBorder.none,
               contentPadding: const EdgeInsets.all(16),
               prefixIcon: Icon(
                 Icons.lock_outline,
-                color: isDarkMode ? const Color(0xFF94A3B8) : const Color(0xFF94A3B8),
+                color: isDarkMode
+                    ? const Color(0xFF94A3B8)
+                    : const Color(0xFF94A3B8),
                 size: 20,
               ),
             ),
@@ -967,7 +1002,9 @@ class _LoginScreenUserState extends State<LoginScreenUser> {
                 width: 40,
                 height: 4,
                 decoration: BoxDecoration(
-                  color: isDarkMode ? const Color(0xFF334155) : const Color(0xFFE2E8F0),
+                  color: isDarkMode
+                      ? const Color(0xFF334155)
+                      : const Color(0xFFE2E8F0),
                   borderRadius: BorderRadius.circular(2),
                 ),
               ),
@@ -993,9 +1030,11 @@ class _LoginScreenUserState extends State<LoginScreenUser> {
                         width: 40,
                         height: 40,
                         decoration: BoxDecoration(
-                          color: isSelected 
+                          color: isSelected
                               ? const Color(0xFF195DE6).withOpacity(0.1)
-                              : (isDarkMode ? const Color(0xFF334155) : const Color(0xFFF1F5F9)),
+                              : (isDarkMode
+                                    ? const Color(0xFF334155)
+                                    : const Color(0xFFF1F5F9)),
                           borderRadius: BorderRadius.circular(8),
                         ),
                         child: Center(
@@ -1004,9 +1043,11 @@ class _LoginScreenUserState extends State<LoginScreenUser> {
                             style: TextStyle(
                               fontSize: 12,
                               fontWeight: FontWeight.w600,
-                              color: isSelected 
+                              color: isSelected
                                   ? const Color(0xFF195DE6)
-                                  : (isDarkMode ? const Color(0xFF94A3B8) : const Color(0xFF64748B)),
+                                  : (isDarkMode
+                                        ? const Color(0xFF94A3B8)
+                                        : const Color(0xFF64748B)),
                             ),
                           ),
                         ),
@@ -1015,8 +1056,12 @@ class _LoginScreenUserState extends State<LoginScreenUser> {
                         country['code']!,
                         style: TextStyle(
                           fontSize: 16,
-                          fontWeight: isSelected ? FontWeight.w600 : FontWeight.w400,
-                          color: isDarkMode ? Colors.white : const Color(0xFF0F172A),
+                          fontWeight: isSelected
+                              ? FontWeight.w600
+                              : FontWeight.w400,
+                          color: isDarkMode
+                              ? Colors.white
+                              : const Color(0xFF0F172A),
                         ),
                       ),
                       trailing: isSelected
@@ -1050,38 +1095,48 @@ class _LoginScreenUserState extends State<LoginScreenUser> {
           text: TextSpan(
             style: TextStyle(
               fontSize: 14,
-              color: isDarkMode ? const Color(0xFF94A3B8) : const Color(0xFF64748B),
+              color: isDarkMode
+                  ? const Color(0xFF94A3B8)
+                  : const Color(0xFF64748B),
             ),
-            children: const [
-              TextSpan(text: 'Are you an official? '),
-              TextSpan(
-                text: 'Login as Admin',
-                style: TextStyle(
-                  color: Color(0xFF195DE6),
-                  fontWeight: FontWeight.w600,
+            children: [
+              const TextSpan(text: 'Are you an official? '),
+              WidgetSpan(
+                child: GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => const AdminLoginScreen(),
+                      ),
+                    );
+                  },
+                  child: const Text(
+                    'Login as Admin',
+                    style: TextStyle(
+                      color: Color(0xFF195DE6),
+                      fontWeight: FontWeight.w600,
+                      fontSize: 14,
+                    ),
+                  ),
                 ),
               ),
             ],
           ),
         ),
-        const SizedBox(height: 16),
+        const SizedBox(height: 8),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(
-              'Terms of Service',
-              style: TextStyle(
-                fontSize: 12,
-                color: isDarkMode ? const Color(0xFF94A3B8) : const Color(0xFF94A3B8),
-              ),
-            ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 8),
               child: Text(
                 '•',
                 style: TextStyle(
                   fontSize: 12,
-                  color: isDarkMode ? const Color(0xFF94A3B8) : const Color(0xFF94A3B8),
+                  color: isDarkMode
+                      ? const Color(0xFF94A3B8)
+                      : const Color(0xFF94A3B8),
                 ),
               ),
             ),
@@ -1089,7 +1144,9 @@ class _LoginScreenUserState extends State<LoginScreenUser> {
               'Privacy Policy',
               style: TextStyle(
                 fontSize: 12,
-                color: isDarkMode ? const Color(0xFF94A3B8) : const Color(0xFF94A3B8),
+                color: isDarkMode
+                    ? const Color(0xFF94A3B8)
+                    : const Color(0xFF94A3B8),
               ),
             ),
           ],
@@ -1097,8 +1154,9 @@ class _LoginScreenUserState extends State<LoginScreenUser> {
       ],
     );
   }
-}
+} // ← closes _LoginScreenUserState
 
+// DotPatternPainter is correctly outside the state class
 class DotPatternPainter extends CustomPainter {
   final bool isDarkMode;
 

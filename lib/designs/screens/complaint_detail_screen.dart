@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -6,6 +8,7 @@ import 'package:grievance_redressal_system/designs/models/complaint_model.dart';
 class ComplaintDetailScreen extends StatefulWidget {
   final ComplaintModel complaint;
 
+  // ignore: use_super_parameters
   const ComplaintDetailScreen({Key? key, required this.complaint})
       : super(key: key);
 
@@ -248,6 +251,8 @@ class _ComplaintDetailScreenState extends State<ComplaintDetailScreen> {
                               Container(
                                 width: 42, height: 42,
                                 decoration: BoxDecoration(
+                                  // ignore: duplicate_ignore
+                                  // ignore: deprecated_member_use
                                   color: const Color(0xFF195DE6).withOpacity(0.1),
                                   borderRadius: BorderRadius.circular(12),
                                 ),
@@ -351,6 +356,8 @@ class _ComplaintDetailScreenState extends State<ComplaintDetailScreen> {
                                           decoration: BoxDecoration(
                                             color: sel
                                                 ? const Color(0xFF195DE6)
+                                                    // ignore: duplicate_ignore
+                                                    // ignore: deprecated_member_use
                                                     .withOpacity(0.06)
                                                 : Colors.transparent,
                                           ),
@@ -361,6 +368,8 @@ class _ComplaintDetailScreenState extends State<ComplaintDetailScreen> {
                                                 decoration: BoxDecoration(
                                                   color: sel
                                                       ? const Color(0xFF195DE6)
+                                                          // ignore: duplicate_ignore
+                                                          // ignore: deprecated_member_use
                                                           .withOpacity(0.12)
                                                       : cat['bgColor'] as Color,
                                                   borderRadius:
@@ -704,6 +713,7 @@ class _ComplaintDetailScreenState extends State<ComplaintDetailScreen> {
                             Image.network(
                               c.imageUrl,
                               fit: BoxFit.cover,
+                              // ignore: unnecessary_underscores
                               errorBuilder: (_, __, ___) =>
                                   _coloredHeader(catColor, catIcon),
                             ),
