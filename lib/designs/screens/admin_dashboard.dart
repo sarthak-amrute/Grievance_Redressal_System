@@ -113,7 +113,7 @@ class _AdminDashboardState extends State<AdminDashboard> {
                         decoration: BoxDecoration(color: const Color(0xFF1A4DB7), borderRadius: BorderRadius.circular(2)),
                       ),
                     ],
-                  ),
+                  ),  
                 ),
               );
             }),

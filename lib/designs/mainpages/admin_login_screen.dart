@@ -6,6 +6,7 @@ import 'package:grievance_redressal_system/designs/screens/admin_dashboard.dart'
 import 'admin_registration_screen.dart';
 // ignore: unused_import
 import 'admin_dashboard.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 /// Auth wrapper — auto-routes based on Firebase session + role check
 class AdminAuthWrapper extends StatelessWidget {
