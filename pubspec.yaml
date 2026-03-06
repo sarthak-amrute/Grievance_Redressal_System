@@ -20,6 +20,7 @@ dependencies:
   geocoding: ^4.0.0
   local_auth: ^3.0.1
   google_maps_flutter: ^2.14.2
+  shared_preferences: ^2.2.2
 
 dev_dependencies:
   flutter_test:
@@ -28,3 +29,4 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+ 

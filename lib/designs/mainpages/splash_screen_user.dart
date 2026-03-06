@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:grievance_redressal_system/designs/mainpages/loginpage_user.dart';
 import 'package:grievance_redressal_system/designs/mainpages/homepage_user.dart';
+import 'package:grievance_redressal_system/designs/screens/admin_dashboard.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -19,7 +21,6 @@ class _SplashScreenState extends State<SplashScreen>
   void initState() {
     super.initState();
 
-    // Setup progress bar animation
     _animationController = AnimationController(
       duration: const Duration(seconds: 4),
       vsync: this,
@@ -31,27 +32,56 @@ class _SplashScreenState extends State<SplashScreen>
 
     _animationController.forward();
 
-    // Navigate after 5 seconds
+    // Navigate after splash finishes
     Future.delayed(const Duration(seconds: 5), () {
-      if (mounted) {
-        // Check if user is already logged in
-        User? currentUser = FirebaseAuth.instance.currentUser;
-        
-        if (currentUser != null) {
-          // User is already logged in, navigate to homepage
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(builder: (context) => const HomepageUser()),
-          );
-        } else {
-          // User is not logged in, navigate to login screen
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(builder: (context) => const LoginScreenUser()),
-          );
-        }
-      }
+      if (mounted) _navigateBasedOnRole();
     });
+  }
+
+  /// ✅ Checks Firebase session + Firestore role, then routes correctly
+  Future<void> _navigateBasedOnRole() async {
+    final user = FirebaseAuth.instance.currentUser;
+
+    // ── No session → go to user login ────────────────────────
+    if (user == null) {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (_) => const LoginScreenUser()),
+      );
+      return;
+    }
+
+    // ── Session exists → check if admin ──────────────────────
+    try {
+      final adminDoc = await FirebaseFirestore.instance
+          .collection('admins')
+          .doc(user.uid)
+          .get();
+
+      if (!mounted) return;
+
+      if (adminDoc.exists) {
+        // ✅ Admin → go to AdminDashboard
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (_) => const AdminDashboard()),
+        );
+      } else {
+        // ✅ Regular user → go to HomepageUser
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (_) => const HomepageUser()),
+        );
+      }
+    } catch (_) {
+      // Firestore error → fall back to user login
+      if (mounted) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (_) => const LoginScreenUser()),
+        );
+      }
+    }
   }
 
   @override
@@ -70,21 +100,16 @@ class _SplashScreenState extends State<SplashScreen>
           gradient: LinearGradient(
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
-            colors: [
-              Color(0xFF1E5CDE),
-              Color(0xFF144BA8),
-              Color(0xFF0D3A7C),
-            ],
+            colors: [Color(0xFF1E5CDE), Color(0xFF144BA8), Color(0xFF0D3A7C)],
           ),
         ),
         child: Stack(
           children: [
-            // -------- MAIN CENTER CONTENT --------
+            // ── MAIN CENTER CONTENT ──────────────────────────
             Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  // Glassmorphism Logo Container
                   Container(
                     height: 110,
                     width: 110,
@@ -103,7 +128,7 @@ class _SplashScreenState extends State<SplashScreen>
                           color: Colors.black.withOpacity(0.2),
                           blurRadius: 15,
                           spreadRadius: 2,
-                        )
+                        ),
                       ],
                     ),
                     child: const Center(
@@ -111,19 +136,13 @@ class _SplashScreenState extends State<SplashScreen>
                         Icons.location_city,
                         size: 60,
                         color: Colors.white,
-                        shadows: [
-                          Shadow(
-                            blurRadius: 8,
-                            color: Colors.black26,
-                          ),
-                        ],
+                        shadows: [Shadow(blurRadius: 8, color: Colors.black26)],
                       ),
                     ),
                   ),
 
                   const SizedBox(height: 30),
 
-                  // App Title
                   const Text(
                     "Civic Connect",
                     style: TextStyle(
@@ -143,7 +162,6 @@ class _SplashScreenState extends State<SplashScreen>
 
                   const SizedBox(height: 12),
 
-                  // Tagline
                   Text(
                     "REPORT. TRACK. RESOLVE.",
                     style: TextStyle(
@@ -158,7 +176,7 @@ class _SplashScreenState extends State<SplashScreen>
               ),
             ),
 
-            // -------- BOTTOM SCENIC IMAGE --------
+            // ── BOTTOM SCENIC IMAGE ──────────────────────────
             Positioned(
               bottom: 100,
               left: 130,
@@ -168,7 +186,6 @@ class _SplashScreenState extends State<SplashScreen>
                 width: 0,
                 child: Stack(
                   children: [
-                    // Scenic background image
                     Container(
                       decoration: const BoxDecoration(
                         image: DecorationImage(
@@ -181,8 +198,6 @@ class _SplashScreenState extends State<SplashScreen>
                         ),
                       ),
                     ),
-
-            //         // Gradient overlay for smooth blend
                     Container(
                       decoration: BoxDecoration(
                         gradient: LinearGradient(
@@ -203,7 +218,7 @@ class _SplashScreenState extends State<SplashScreen>
               ),
             ),
 
-            // -------- ANIMATED LOADING INDICATOR --------
+            // ── ANIMATED PROGRESS BAR ────────────────────────
             Positioned(
               bottom: 50,
               left: 0,

@@ -32,8 +32,7 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
       final doc = await _firestore.collection('admins').doc(uid).get();
       if (doc.exists && mounted) {
         setState(() {
-          _adminName =
-              doc.data()?['fullName'] as String? ?? 'Admin';
+          _adminName = doc.data()?['fullName'] as String? ?? 'Admin';
         });
       }
     } catch (_) {}
@@ -69,15 +68,17 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
     final greeting = hour < 12
         ? 'Good Morning'
         : hour < 17
-            ? 'Good Afternoon'
-            : 'Good Evening';
+        ? 'Good Afternoon'
+        : 'Good Evening';
 
     return Container(
       padding: const EdgeInsets.fromLTRB(20, 20, 20, 28),
       decoration: const BoxDecoration(
         color: Color(0xFF1A4DB7),
-        borderRadius:
-            BorderRadius.only(bottomLeft: Radius.circular(28), bottomRight: Radius.circular(28)),
+        borderRadius: BorderRadius.only(
+          bottomLeft: Radius.circular(28),
+          bottomRight: Radius.circular(28),
+        ),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -114,8 +115,11 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
                   color: Colors.white.withOpacity(0.2),
                   borderRadius: BorderRadius.circular(22),
                 ),
-                child: const Icon(Icons.admin_panel_settings,
-                    color: Colors.white, size: 24),
+                child: const Icon(
+                  Icons.admin_panel_settings,
+                  color: Colors.white,
+                  size: 24,
+                ),
               ),
             ],
           ),
@@ -133,9 +137,10 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
                 const Text(
                   'Live complaint tracking active',
                   style: TextStyle(
-                      fontSize: 13,
-                      color: Colors.white,
-                      fontWeight: FontWeight.w500),
+                    fontSize: 13,
+                    color: Colors.white,
+                    fontWeight: FontWeight.w500,
+                  ),
                 ),
                 const Spacer(),
                 // Live complaint count badge
@@ -148,7 +153,9 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
                     final count = snap.data?.docs.length ?? 0;
                     return Container(
                       padding: const EdgeInsets.symmetric(
-                          horizontal: 10, vertical: 4),
+                        horizontal: 10,
+                        vertical: 4,
+                      ),
                       decoration: BoxDecoration(
                         color: count > 0
                             ? const Color(0xFFEF4444)
@@ -188,8 +195,7 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
           if (snapshot.hasData) {
             for (var doc in snapshot.data!.docs) {
               final data = doc.data() as Map<String, dynamic>;
-              final status =
-                  (data['status'] as String? ?? '').toLowerCase();
+              final status = (data['status'] as String? ?? '').toLowerCase();
               total++;
               if (status == 'pending') pending++;
               if (status == 'in progress') inProgress++;
@@ -216,7 +222,9 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
                       width: 16,
                       height: 16,
                       child: CircularProgressIndicator(
-                          strokeWidth: 2, color: Color(0xFF1A4DB7)),
+                        strokeWidth: 2,
+                        color: Color(0xFF1A4DB7),
+                      ),
                     ),
                 ],
               ),
@@ -227,16 +235,32 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
                 physics: const NeverScrollableScrollPhysics(),
                 mainAxisSpacing: 12,
                 crossAxisSpacing: 12,
-                childAspectRatio: 1.35,
+                childAspectRatio: 1.25,
                 children: [
-                  _summaryCard('Total', total, Icons.inbox_rounded,
-                      const Color(0xFF1A4DB7)),
-                  _summaryCard('Pending', pending, Icons.hourglass_top_rounded,
-                      const Color(0xFFF59E0B)),
-                  _summaryCard('In Progress', inProgress,
-                      Icons.autorenew_rounded, const Color(0xFF6366F1)),
-                  _summaryCard('Resolved', resolved,
-                      Icons.check_circle_rounded, const Color(0xFF10B981)),
+                  _summaryCard(
+                    'Total',
+                    total,
+                    Icons.inbox_rounded,
+                    const Color(0xFF1A4DB7),
+                  ),
+                  _summaryCard(
+                    'Pending',
+                    pending,
+                    Icons.hourglass_top_rounded,
+                    const Color(0xFFF59E0B),
+                  ),
+                  _summaryCard(
+                    'In Progress',
+                    inProgress,
+                    Icons.autorenew_rounded,
+                    const Color(0xFF6366F1),
+                  ),
+                  _summaryCard(
+                    'Resolved',
+                    resolved,
+                    Icons.check_circle_rounded,
+                    const Color(0xFF10B981),
+                  ),
                 ],
               ),
             ],
@@ -246,8 +270,7 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
     );
   }
 
-  Widget _summaryCard(
-      String label, int value, IconData icon, Color color) {
+  Widget _summaryCard(String label, int value, IconData icon, Color color) {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
@@ -325,8 +348,8 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return const Center(
-                    child: CircularProgressIndicator(
-                        color: Color(0xFF1A4DB7)));
+                  child: CircularProgressIndicator(color: Color(0xFF1A4DB7)),
+                );
               }
 
               if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
@@ -364,7 +387,6 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
     final description = data['description'] as String? ?? '';
     final address = data['address'] as String? ?? '';
     final createdAt = data['createdAt'] as Timestamp?;
-    // ignore: unused_local_variable
     final complaintId = data['complaintId'] as String? ?? id;
 
     Color statusColor;
@@ -389,10 +411,8 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
       onTap: () => Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (_) => AdminComplaintDetailScreen(
-            complaintId: id,
-            data: data,
-          ),
+          builder: (_) =>
+              AdminComplaintDetailScreen(complaintId: id, data: data),
         ),
       ),
       child: Container(
@@ -448,7 +468,9 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
                       ),
                       Container(
                         padding: const EdgeInsets.symmetric(
-                            horizontal: 8, vertical: 3),
+                          horizontal: 8,
+                          vertical: 3,
+                        ),
                         decoration: BoxDecoration(
                           color: statusColor.withOpacity(0.1),
                           borderRadius: BorderRadius.circular(10),
@@ -469,8 +491,8 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
                     description.isEmpty
                         ? address
                         : description.length > 60
-                            ? '${description.substring(0, 60)}...'
-                            : description,
+                        ? '${description.substring(0, 60)}...'
+                        : description,
                     style: const TextStyle(
                       fontSize: 12,
                       color: Color(0xFF64748B),
@@ -488,8 +510,7 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
                 ],
               ),
             ),
-            const Icon(Icons.chevron_right,
-                size: 18, color: Color(0xFF94A3B8)),
+            const Icon(Icons.chevron_right, size: 18, color: Color(0xFF94A3B8)),
           ],
         ),
       ),
@@ -524,8 +545,7 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
               final Map<String, int> cats = {};
               for (var doc in snapshot.data!.docs) {
                 final data = doc.data() as Map<String, dynamic>;
-                final cat =
-                    data['category'] as String? ?? 'Other';
+                final cat = data['category'] as String? ?? 'Other';
                 cats[cat] = (cats[cat] ?? 0) + 1;
               }
 
@@ -560,19 +580,24 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Row(
-                            mainAxisAlignment:
-                                MainAxisAlignment.spaceBetween,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Text(e.key,
-                                  style: const TextStyle(
-                                      fontSize: 13,
-                                      fontWeight: FontWeight.w600,
-                                      color: Color(0xFF0F172A))),
-                              Text('${e.value}',
-                                  style: TextStyle(
-                                      fontSize: 13,
-                                      fontWeight: FontWeight.w700,
-                                      color: color)),
+                              Text(
+                                e.key,
+                                style: const TextStyle(
+                                  fontSize: 13,
+                                  fontWeight: FontWeight.w600,
+                                  color: Color(0xFF0F172A),
+                                ),
+                              ),
+                              Text(
+                                '${e.value}',
+                                style: TextStyle(
+                                  fontSize: 13,
+                                  fontWeight: FontWeight.w700,
+                                  color: color,
+                                ),
+                              ),
                             ],
                           ),
                           const SizedBox(height: 6),
@@ -582,8 +607,7 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
                               value: ratio,
                               minHeight: 8,
                               backgroundColor: const Color(0xFFE2E8F0),
-                              valueColor:
-                                  AlwaysStoppedAnimation<Color>(color),
+                              valueColor: AlwaysStoppedAnimation<Color>(color),
                             ),
                           ),
                         ],
